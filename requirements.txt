@@ -1,0 +1,14 @@
+numpy
+pandas
+keras
+scikit-learn
+matplotlib
+seaborn
+jupyter
+notebook
+scipy
+gradio
+flask
+opencv-python
+captum
+kagglehub
