@@ -1,21 +1,22 @@
 import tensorflow as tf
 import numpy as np
 
-def compute_saliency(model, image):
-    """
-    image shape: (1,H,W,C)
-    """
-
-    image = tf.convert_to_tensor(image)
+def make_saliency_map(
+    model,
+    image,
+    pred_index=None
+):
+    image = tf.cast(image, tf.float32)
 
     with tf.GradientTape() as tape:
         tape.watch(image)
 
-        preds = model(image, training=False)
+        predictions = model(image)
 
-        class_idx = tf.argmax(preds[0])
+        if pred_index is None:
+            pred_index = tf.argmax(predictions[0])
 
-        loss = preds[:, class_idx]
+        loss = predictions[:, pred_index]
 
     grads = tape.gradient(loss, image)
 
@@ -33,11 +34,3 @@ def compute_saliency(model, image):
     )
 
     return saliency
-'''
-usage
-
-saliency = compute_saliency(
-    model,
-    np.expand_dims(img, 0)
-)
-'''
