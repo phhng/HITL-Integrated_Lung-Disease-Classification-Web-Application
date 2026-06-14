@@ -1,0 +1,10 @@
+# Create VENV on version 3.11 of python
+py -3.11 -m venv myenv
+
+# Install trained Keras models
+
+# Activate VENV
+.\myenv\Scripts\activate
+
+# Run app
+py -m app.app

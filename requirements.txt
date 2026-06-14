@@ -1,14 +1,13 @@
 numpy
 pandas
 keras
+opencv-python
 scikit-learn
 matplotlib
 seaborn
-jupyter
-notebook
 scipy
 gradio
 flask
-opencv-python
-captum
 kagglehub
+sap
+tensorflow==2.21.0

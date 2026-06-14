@@ -1,40 +1,42 @@
 import os
+from keras import models
+from tensorflow.keras.layers import Conv2D
 
 def load_model(model_path, num_classes=2):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model = models.load_model(
+        model_path
+    )
+    return model
 
-    model = models.load(model_path)
-    model.to(device)
-    model.eval()
+def find_last_conv_layer(model):
 
-    print("Custom model loaded successfully!")
-    return model, device
+    for layer in reversed(model.layers):
 
-def load_clf_model(model_name, num_classes=2, IMAGE_SIZE = (224, 224)):
-    num_classes = num_classes
-    IMAGE_SIZE = IMAGE_SIZE
+        if isinstance(layer, Conv2D):
+            return layer
 
-    current_dir = os.path.dirname(__file__)
+        if hasattr(layer, "layers"):
+            result = find_last_conv_layer(layer)
+            if result is not None:
+                return result
 
-    model_path = os.path.join(current_dir,"model", "weights", model_name)
+    return None
 
+import re
 
-    torch.use_deterministic_algorithms(True)
-    torch.backends.cudnn.benchmark = False
-    
-    model, device = load_model(model_path,num_classes)
+def normalize_class_name(class_name):
+    class_name = class_name.strip().lower()
 
-    return model, device
+    class_name = re.sub(
+        r"[^a-z0-9]+",
+        "_",
+        class_name
+    )
 
-def load_seg_model(model_path):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    class_name = re.sub(
+        r"_+",
+        "_",
+        class_name
+    ).strip("_")
 
-    model = UNet(in_channels=1, out_channels=1, feature_dims=64) 
-    state_dict = torch.load(model_path, map_location=device)
-    model.load_state_dict(state_dict)
-    model.to(device)
-    model.eval()
-
-    print("Custom model loaded successfully!")
-    return model, device
-
+    return class_name
