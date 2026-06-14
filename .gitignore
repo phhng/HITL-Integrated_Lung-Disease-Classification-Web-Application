@@ -16,6 +16,7 @@ env/
 .ipynb_checkpoints/
 
 # Build artifacts
+dataset/
 build/
 dist/
 *.egg-info/
