@@ -38,21 +38,21 @@ def make_gradcam_heatmap(
         axis=-1
     )
 
-    print("conv_outputs:",
-        tf.reduce_min(conv_outputs).numpy(),
-        tf.reduce_max(conv_outputs).numpy())
+    # print("conv_outputs:",
+    #     tf.reduce_min(conv_outputs).numpy(),
+    #     tf.reduce_max(conv_outputs).numpy())
 
-    print("grads:",
-        tf.reduce_min(grads).numpy(),
-        tf.reduce_max(grads).numpy())
+    # print("grads:",
+    #     tf.reduce_min(grads).numpy(),
+    #     tf.reduce_max(grads).numpy())
 
-    print("pooled_grads:",
-        tf.reduce_min(pooled_grads).numpy(),
-        tf.reduce_max(pooled_grads).numpy())
+    # print("pooled_grads:",
+    #     tf.reduce_min(pooled_grads).numpy(),
+    #     tf.reduce_max(pooled_grads).numpy())
 
-    print("grads mean:", tf.reduce_mean(grads).numpy())
-    print("grads abs mean:", tf.reduce_mean(tf.abs(grads)).numpy())
-    print("Before:", np.min(heatmap), np.max(heatmap))
+    # print("grads mean:", tf.reduce_mean(grads).numpy())
+    # print("grads abs mean:", tf.reduce_mean(tf.abs(grads)).numpy())
+    # print("Before:", np.min(heatmap), np.max(heatmap))
 
     heatmap = tf.maximum(heatmap, 0)
 
@@ -60,5 +60,5 @@ def make_gradcam_heatmap(
 
     heatmap = heatmap.numpy()
 
-    print("After:", heatmap.min(), heatmap.max())
+    # print("After:", heatmap.min(), heatmap.max())
     return heatmap

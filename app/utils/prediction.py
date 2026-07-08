@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import tensorflow as tf
 import matplotlib.pyplot as plt
+from matplotlib.ticker import PercentFormatter
 import requests
 from .gradcam import make_gradcam_heatmap
 from .saliency import make_saliency_map
@@ -88,10 +89,18 @@ def predict_and_visualize(
 
         topk_table = []
 
+        percentages = probs * 100
+        rounded = np.round(percentages, 2)
+
+        diff = 100.0 - rounded.sum()
+        rounded[np.argmax(rounded)] += diff
+
         for idx, prob in zip(top_idxs, top_probs):
             topk_table.append([
                 class_names[idx] if class_names else str(idx),
-                round(float(prob) * 100, 2)
+                rounded[idx]
+                # class_names[idx] if class_names else str(idx),
+                # round(float(prob) * 100, 2)
             ])
 
         top1_idx = int(top_idxs[0])
@@ -164,6 +173,10 @@ def predict_and_visualize(
 
         ax.bar(range(len(probs)),probs)
 
+        ax.set_yscale("log")
+        ax.set_ylim(max(probs.min() / 2, 1e-6), 1)
+        ax.yaxis.set_major_formatter(PercentFormatter(1.0, decimals=2))
+
         if class_names:
             ax.set_xticks(
                 range(len(class_names))
@@ -180,7 +193,7 @@ def predict_and_visualize(
         )
 
         plt.tight_layout()
-
+        
         return (
             superimposed,#.resize((224, 224)),
             pred_class,

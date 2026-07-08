@@ -36,7 +36,7 @@ with gr.Blocks(
                     ("Grad-CAM", "gradcam"),
                     ("Saliency Map", "saliency"),
                     ("Integrated Gradients", "integrated"),
-                    ("Occlusion Sensitivity", "occlusion"),
+                    ("Occlusion Map", "occlusion"),
                 ],
                 value="gradcam",
                 label="Phương pháp giải thích"
@@ -69,8 +69,7 @@ with gr.Blocks(
                     #     label="Độ tin cậy chi tiết"
                     # )
 
-
-                with gr.Tab("Giải thích"):
+                # with gr.Tab("Giải thích"):
 
                     heatmap_output = gr.Image(
                         label="Giải thích bằng hình ảnh"
